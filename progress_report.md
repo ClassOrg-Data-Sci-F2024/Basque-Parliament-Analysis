@@ -19,7 +19,7 @@ Citation:
 
 ## Step 1: Filtering relevant rows using keywords (performed in Python)
 
-The script that I wrote and implemented is available here: [Filtering Through Keywords](main/BasqueSpanishPar.py). It is included in the commit for the second progress report but may be deleted upon final submission. Specifically, this program looked for utterances that contained any of the following keywords: 
+The script that I wrote and implemented is available here: [Filtering Through Keywords](BasqueSpanishPar.py). It is included in the commit for the second progress report but may be deleted upon final submission. Specifically, this program looked for utterances that contained any of the following keywords: 
 
 ['hablante', 'euskera', 'lenguaje', 'idioma', 'aprendizaje', 'lingüístico', 'lingüística']
 

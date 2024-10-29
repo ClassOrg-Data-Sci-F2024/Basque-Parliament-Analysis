@@ -49,7 +49,7 @@ Next, read in the .csv file:
 ```{r}
 rel_data <- read_csv("BS_RelData.csv")
 ```
-Reducing size by only including first 200 rows:
+Reducing size by only including first 250 rows:
 ```{r}
 small_data <- rel_data %>% slice(1:250)
 view(small_data)

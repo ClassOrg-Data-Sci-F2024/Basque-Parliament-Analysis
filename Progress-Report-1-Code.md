@@ -75,7 +75,7 @@ rel_data <- read_csv("BS_RelData.csv")
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
-Reducing size by only including first 200 rows:
+Reducing size by only including first 250 rows:
 
 ``` r
 small_data <- rel_data %>% slice(1:250)

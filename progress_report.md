@@ -36,3 +36,30 @@ Finally, I needed to remove columns that are *definitely* irrelevant to my analy
 ## Next steps:
 
 Next, I will need to annotate my data and perform statistical analyses.
+
+# Progress report 2 (11/11)
+
+For this report, I decided on an annotation scheme. I decided to use the Spanish Emotion Lexicon by Dr. Grigori Sidorov. This lexicon is made up of 2,036 different words. Each word is associated with at least one of the following emotions: "joy, anger, fear, sadness, surprise, and disgust" to a degree that is measured by the Probability Factor of Affective use (PFA). This lexicon was annotated by 19 human annotators.
+
+The raw SEL lexicon is available [here](SEL.xlsx).
+
+The following article contains more information about the lexicon:
+
+Grigori Sidorov, Sabino Miranda-Jiménez, Francisco Viveros-Jiménez, Alexander Gelbukh, Noé Castro-Sánchez, Francisco Velásquez, Ismael Díaz-Rangel, Sergio Suárez-Guerra, Alejandro Treviño, and Juan Gordon. Empirical Study of Opinion Mining in Spanish Tweets. LNAI 7629, 2012, pp. 1-14.
+
+My plan for the usage of this lexicon is to apply the lexicon to every phrase in the 'sentence' column and produce a new column that, for each row, provides emotion categories as well as their PFAs.
+
+The following markdown document published by Kayleah Griffen will be especially helpful in actually implementing this lexicon into my existing data:
+
+https://rpubs.com/klgriffen96/data607_hw10
+
+Next, I chose a license. Based on the fact that my original dataset was licensed as cc0-1.0, I decided to choose the same license. Additionally, the license agreement for the SEL is as follows:
+
+"
+1.    You can use all these programs freely for academic purposes. No                warranty.
+2.    You should cite the corresponding papers in your publications obtained         with the help of these programs.
+3.    If you plan to use the download in a commercial application, please,           contact me.
+4.    Downloading means that you accept the license. Thank you.
+"
+
+For this reason, I am including both the SEL raw data and the SEL published paper citation in my repository and in this progress report, respectively.

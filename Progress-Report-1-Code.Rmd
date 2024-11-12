@@ -88,4 +88,17 @@ mean(small_data_span2$length)
 #number of unique speakers
 n_distinct(small_data_span2$speaker_id)
 ```
+## Importing SEL lexicon
+
+Load dependencies:
+```{r}
+library("readxl")
+library("readr")
+```
+
+Importing xlsx file:
+```{r}
+sel <- read_excel("SEL.xlsx")
+```
+
 

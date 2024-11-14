@@ -71,7 +71,7 @@ This leaves me with 190 tidy rows to annotate for sentiment. This number may cha
 
 Now exporting dataframe to .csv file (annotations still needed):
 ```{r}
-write_csv(small_data_span2, "small_data_NA.csv")
+write_csv(sampled_data, "sampled_data.csv")
 ```
 
 ## Some basic stats:

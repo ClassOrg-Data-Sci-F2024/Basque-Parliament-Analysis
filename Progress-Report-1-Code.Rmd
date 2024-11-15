@@ -28,7 +28,7 @@ Citation:
 ## Step 1: Performed in Python
 In this step, I wrote a script to filter the train.tsv file provided in the Hugging Face dataset folder to include only the rows/utterances that contain the following keywords:
 
-['hablante', 'euskera', 'lenguaje', 'idioma', 'aprendizaje', 'lingüístico', 'lingüística']
+['hablante', 'euskera', 'lenguaje', 'idioma', 'aprendizaje', 'lingüístic']
 
 These keywords were chosen because they demonstrate the relevance of the utterance to the concept of language, linguistics, or "speaker".
 
@@ -54,6 +54,33 @@ Reducing size by only including first 250 rows:
 small_data <- rel_data %>% slice(1:250)
 view(small_data)
 ```
+
+Finding number of total rows in the raw data:
+```{r}
+row_count <- nrow(raw_data)
+row_count
+```
+
+
+Now, breaking up the dataset into two separate parts so that it is possible to push to GitHub (100MB maximum):
+```{r}
+row_split1 <- (nrow(raw_data)/2) %>% round(digits = 0)
+
+row_split2 <- row_split1+1
+
+raw_data1 <- raw_data %>% 
+  slice(1:row_split)
+
+raw_data2 <- raw_data %>% 
+  slice(row_split2:row_count)
+```
+
+Exporting the two above datasets into .csv files:
+```{r}
+write_csv(raw_data1, "raw_data1.csv")
+write_csv(raw_data2, "raw_data2.csv")
+```
+
 
 Now, filtering to only include rows that are Spanish utterances (exclude Basque and bilingual):
 ```{r}

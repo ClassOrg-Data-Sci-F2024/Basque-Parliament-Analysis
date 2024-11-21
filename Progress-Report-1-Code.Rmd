@@ -115,7 +115,7 @@ view(small_data_span4)
 Reducing size by only including 300 random rows:
 ```{r}
 set.seed(10)
-sampled_data <- small_data_span4 %>% slice_sample(n=300)
+sampled_data <- small_data_span4 %>% slice_sample(n=1000)
 view(sampled_data)
 ```
 
@@ -156,5 +156,29 @@ library(tidytext)
 
 sampled_data_ngrams <- sampled_data %>%
   unnest_tokens(tokens, sentence, token="words", drop=FALSE, to_lower=TRUE)
-sampled_data_ngrams
+view(sampled_data_ngrams)
 ```
+
+Viewing and assessing SEL corpus:
+```{r}
+view(sel)
+```
+
+The following two code chunks were inspired by a project by Kayleah Griffen, which can be found at the following site: https://rpubs.com/klgriffen96/data607_hw10
+
+Adjusting column names so that both dataframes are conducive to the inner_join() function:
+```{r}
+sel <- sel %>% 
+  rename(`tokens` = Palabra)
+view(sel)
+```
+
+Does word correspond to a particular emotion?
+```{r}
+merged_data <- sampled_data_ngrams %>% 
+  inner_join(sel, by="tokens", multiple = "all", unmatched = "drop", relationship = "many-to-many")
+
+view(merged_data)
+```
+
+

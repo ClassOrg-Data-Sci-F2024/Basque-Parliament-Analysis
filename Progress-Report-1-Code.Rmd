@@ -115,7 +115,7 @@ view(small_data_span4)
 Reducing size by only including 300 random rows:
 ```{r}
 set.seed(10)
-sampled_data <- small_data_span4 %>% slice_sample(n=1000)
+sampled_data <- small_data_span4 %>% slice_sample(n=2000)
 view(sampled_data)
 ```
 
@@ -176,9 +176,23 @@ view(sel)
 Does word correspond to a particular emotion?
 ```{r}
 merged_data <- sampled_data_ngrams %>% 
-  inner_join(sel, by="tokens", multiple = "all", unmatched = "drop", relationship = "many-to-many")
+  inner_join(sel, by="tokens", multiple = "all", unmatched = "drop", relationship = "many-to-many") %>% 
+  group_by(sentence, speaker_id)
 
 view(merged_data)
 ```
 
+Grouping by sentence/utterance:
+```{r}
+merged_data2 <- merged_data %>% 
+  arrange(speaker_id, group_by=TRUE)
+merged_data2
+```
+
+## Analysis Ideas:
+- finding general sentiment for each speaker
+- wordcloud of tokens for each sentiment represented in data
+- finding general sentiment distribution overall
+
+*Figure out what to do with PFAs and tokens that have more than one emotion
 

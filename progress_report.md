@@ -63,3 +63,17 @@ Next, I chose a license. Based on the fact that my original dataset was licensed
 "
 
 For this reason, I am including both the SEL raw data and the SEL published paper citation in my repository and in this progress report, respectively.
+
+# Progress Report 3:
+
+For this progress report, I was able to accomplish several tasks on my to-do list. First, I was able to upload the Spanish Emotion Lexicon to my data pipeline.
+
+Next, I was able to translate my Python script (which identified and selected only the utterances that contained the following keywords:['hablante', 'euskera', 'lenguaje', 'idioma', 'aprendizaje', 'lingüístic']) into R using the stringr() package, specifically str_detect().
+
+Additionally, I ran into an issue with the size of the raw data file that I was attempting to upload to GitHub. As GitHub only allows a maximum file size of 100MB, I divided the raw data into two smaller files and uploaded those to GitHub. I provided the specific code pipeline for accomplishing this in my main data pipeline (commented out to preserve reproducability and to avoid needing to handle the massive raw data file). I then used the rbind() function to bind the two dataframes together within the R environment.
+
+Next, I reviewed feedback from a Project Guestbook written to me, and decided to randomly sample 1000 rows as opposed to selecting the first 250. I increased the number of rows sampled because not all word tokens corresponded with a specific emotion, which necessitated dropping those rows that did not have a corresponding emotion. I set the seed to the arbitrary value of 10.
+
+Next, I used the inner_join() function to join the main data file with the Spanish Emotion Lexicon (SEL) file. I found the following project by Kayleah Griffen https://rpubs.com/klgriffen96/data607_hw10 to be incredibly helpful in not only suggesting a emotion lexicon in Spanish but also using the rename() and the inner_join() function specifically to connect the two dataframes by the "word" variable (rename() was necessary so that the two dataframes had an identical column name in common, as opposed to one in English and one in Spanish).
+Note: The inner_join() function was the specific function that necessitated adding more rows to my data sample. I found that when I kept the number of sampled rows at the original 300, I was not left with enough rows for a thorough analysis. I plan to continue adjusting the sample size as needed.
+

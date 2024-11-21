@@ -171,7 +171,7 @@ Reducing size by only including 300 random rows:
 
 ``` r
 set.seed(10)
-sampled_data <- small_data_span4 %>% slice_sample(n=1000)
+sampled_data <- small_data_span4 %>% slice_sample(n=2000)
 view(sampled_data)
 ```
 
@@ -188,7 +188,7 @@ write_csv(sampled_data, "sampled_data.csv")
 nrow(sampled_data)
 ```
 
-    ## [1] 1000
+    ## [1] 2000
 
 ``` r
 #number of columns:
@@ -202,14 +202,14 @@ ncol(sampled_data)
 mean(sampled_data$length)
 ```
 
-    ## [1] 7.77879
+    ## [1] 7.68555
 
 ``` r
 #number of unique speakers
 n_distinct(sampled_data$speaker_id)
 ```
 
-    ## [1] 98
+    ## [1] 121
 
 ## Importing SEL lexicon
 
@@ -260,7 +260,55 @@ Does word correspond to a particular emotion?
 
 ``` r
 merged_data <- sampled_data_ngrams %>% 
-  inner_join(sel, by="tokens", multiple = "all", unmatched = "drop", relationship = "many-to-many")
+  inner_join(sel, by="tokens", multiple = "all", unmatched = "drop", relationship = "many-to-many") %>% 
+  group_by(sentence, speaker_id)
 
 view(merged_data)
 ```
+
+Grouping by sentence/utterance:
+
+``` r
+merged_data2 <- merged_data %>% 
+  arrange(speaker_id, group_by=TRUE)
+merged_data2
+```
+
+    ## # A tibble: 537 × 10
+    ## # Groups:   sentence, speaker_id [433]
+    ##    language speaker_id   PRR length sentence         keywords tokens   `#`   PFA
+    ##    <chr>         <dbl> <dbl>  <dbl> <chr>            <lgl>    <chr>  <dbl> <dbl>
+    ##  1 es                0  99.2   9.21 y del plan de e… TRUE     lograr   498 0.663
+    ##  2 es                0 100    10.2  de querer o no … TRUE     querer   553 0.63 
+    ##  3 es                0 100    10.2  de querer o no … TRUE     querer   553 0.63 
+    ##  4 es                0 100    10.2  de querer o no … TRUE     llevar  1593 0.132
+    ##  5 es                0 100    10.2  de querer o no … TRUE     bien     142 0.798
+    ##  6 es                0  99.0   8.05 hemos contribui… TRUE     favor    389 0.33 
+    ##  7 es                0 100     9.02 se pueda cumpli… TRUE     cumpl…   264 0.496
+    ##  8 es                6  92.7   7.96 pero tal y como… TRUE     agrad…    43 0.764
+    ##  9 es                6 100     8.98 recentralizació… TRUE     ataque   731 0.899
+    ## 10 es                6 100    10.1  de presencia ve… TRUE     éxito    367 0.864
+    ## # ℹ 527 more rows
+    ## # ℹ 1 more variable: Categoría <chr>
+
+Creating wordclouds for each sentiment:
+
+``` r
+library(wordcloud)
+```
+
+    ## Loading required package: RColorBrewer
+
+``` r
+library(RColorBrewer)
+library(wordcloud2)
+```
+
+## Analysis Ideas:
+
+- finding general sentiment for each speaker
+- wordcloud of tokens for each sentiment represented in data
+- finding general sentiment distribution overall
+
+\*Figure out what to do with PFAs and tokens that have more than one
+emotion

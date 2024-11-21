@@ -189,6 +189,13 @@ merged_data2 <- merged_data %>%
 merged_data2
 ```
 
+Creating wordclouds for each sentiment:
+```{r}
+library(wordcloud)
+library(RColorBrewer)
+library(wordcloud2)
+```
+
 ## Analysis Ideas:
 - finding general sentiment for each speaker
 - wordcloud of tokens for each sentiment represented in data

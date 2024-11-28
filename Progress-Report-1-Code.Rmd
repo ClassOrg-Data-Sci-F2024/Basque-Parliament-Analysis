@@ -252,7 +252,7 @@ fear_words <- merged_data3 %>%
 view(anger_words)
 ```
 
-Generating wordclouds for each sentiment:
+Generating wordclouds (1) for each sentiment:
 ```{r}
 #anger
 set.seed(10)
@@ -285,10 +285,16 @@ wordcloud(words = disgust_words$tokens, freq = anger_words$Freq, min.freq = 1,
           colors=brewer.pal(8, "Dark2"))
 
 #fear
-set.seed(10)
+set.seed(8)
 wordcloud(words = fear_words$tokens, freq = anger_words$Freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
-          colors=brewer.pal(8, "Dark2"))
+          max.words=200, random.order=FALSE, rot.per=0.5,
+          colors=brewer.pal(8, "Paired"))
+```
+
+Generating wordclouds (2):
+```{r}
+#anger
+wordcloud2(data=anger_words, size = 1.5, shape = 'pentagon')
 ```
 
 ## Analysis Ideas:

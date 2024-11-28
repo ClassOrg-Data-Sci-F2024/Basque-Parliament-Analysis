@@ -115,7 +115,7 @@ view(small_data_span4)
 Reducing size by only including 300 random rows:
 ```{r}
 set.seed(10)
-sampled_data <- small_data_span4 %>% slice_sample(n=2000)
+sampled_data <- small_data_span4 %>% slice_sample(n=nrow(small_data_span4))
 view(sampled_data)
 ```
 
@@ -194,6 +194,101 @@ Creating wordclouds for each sentiment:
 library(wordcloud)
 library(RColorBrewer)
 library(wordcloud2)
+
+#Ungrouping to create wordclouds
+merged_data3 <- merged_data %>% 
+  ungroup()
+```
+
+```{r}
+anger_words <- merged_data3 %>% 
+  filter(Categoría=="Enojo") %>% 
+  group_by(tokens) %>% 
+  mutate(Freq = n()) %>% 
+  ungroup() %>% 
+  select(tokens, Freq, Categoría) %>% 
+  distinct(tokens, .keep_all = TRUE)
+
+happiness_words <- merged_data3 %>% 
+  filter(Categoría=="Alegría") %>% 
+  group_by(tokens) %>% 
+  mutate(Freq = n()) %>% 
+  ungroup() %>% 
+  select(tokens, Freq, Categoría) %>% 
+  distinct(tokens, .keep_all = TRUE)
+
+sadness_words <- merged_data3 %>% 
+  filter(Categoría=="Tristeza") %>% 
+  group_by(tokens) %>% 
+  mutate(Freq = n()) %>% 
+  ungroup() %>% 
+  select(tokens, Freq, Categoría) %>% 
+  distinct(tokens, .keep_all = TRUE)
+
+surprise_words <- merged_data3 %>% 
+  filter(Categoría=="Sorpresa") %>% 
+  group_by(tokens) %>% 
+  mutate(Freq = n()) %>% 
+  ungroup() %>% 
+  select(tokens, Freq, Categoría) %>% 
+  distinct(tokens, .keep_all = TRUE)
+
+disgust_words <- merged_data3 %>% 
+  filter(Categoría=="Repulsión") %>% 
+  group_by(tokens) %>% 
+  mutate(Freq = n()) %>% 
+  ungroup() %>% 
+  select(tokens, Freq, Categoría) %>% 
+  distinct(tokens, .keep_all = TRUE)
+
+fear_words <- merged_data3 %>% 
+  filter(Categoría=="Miedo") %>% 
+  group_by(tokens) %>% 
+  mutate(Freq = n()) %>% 
+  ungroup() %>% 
+  select(tokens, Freq, Categoría) %>% 
+  distinct(tokens, .keep_all = TRUE)
+
+view(anger_words)
+```
+
+Generating wordclouds for each sentiment:
+```{r}
+#anger
+set.seed(10)
+wordcloud(words = anger_words$tokens, freq = anger_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35,
+          colors=brewer.pal(8, "Dark2"))
+
+#happiness
+set.seed(10)
+wordcloud(words = happiness_words$tokens, freq = anger_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35,
+          colors=brewer.pal(8, "Dark2"))
+
+#sadness
+set.seed(10)
+wordcloud(words = sadness_words$tokens, freq = anger_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35,
+          colors=brewer.pal(8, "Dark2"))
+
+#surprise
+set.seed(10)
+wordcloud(words = surprise_words$tokens, freq = anger_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35,
+          colors=brewer.pal(8, "Dark2"))
+
+#disgust
+set.seed(10)
+wordcloud(words = disgust_words$tokens, freq = anger_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35,
+          colors=brewer.pal(8, "Dark2"))
+
+#fear
+set.seed(10)
+wordcloud(words = fear_words$tokens, freq = anger_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35,
+          colors=brewer.pal(8, "Dark2"))
 ```
 
 ## Analysis Ideas:

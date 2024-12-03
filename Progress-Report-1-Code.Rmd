@@ -362,10 +362,6 @@ comp_waffle <- by_speaker %>%
   select(Categoría, Freq) %>% 
   distinct()
 comp_waffle
-  
-comp_waffle
-ggplot(by_speaker_comp, aes(x=Categoría, y=Freq)) +
-  geom_tile(color="gray20", linewidth=0.5)
 
 waffle(comp_waffle)
 ```

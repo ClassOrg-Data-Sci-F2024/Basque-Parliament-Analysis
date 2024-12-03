@@ -198,6 +198,7 @@ library(wordcloud2)
 #Ungrouping to create wordclouds
 merged_data3 <- merged_data %>% 
   ungroup()
+merged_data3
 ```
 
 ```{r}
@@ -291,16 +292,27 @@ wordcloud(words = fear_words$tokens, freq = anger_words$Freq, min.freq = 1,
           colors=brewer.pal(8, "Paired"))
 ```
 
-Generating wordclouds (2):
+Generating bar charts for each sentiment:
 ```{r}
-#anger
-wordcloud2(data=anger_words, size = 1.5, shape = 'pentagon')
+library(ggplot2)
+fear_plot <- ggplot(fear_words, aes(tokens, Freq)) + 
+  geom_bar(stat = 'identity', fill="red3", width = 0.5) +
+  scale_x_discrete(guide = guide_axis(n.dodge=3)) +
+  labs(title = 'Fear Word Frequency')
+  
+fear_plot
 ```
+
+
+
 
 ## Analysis Ideas:
 - finding general sentiment for each speaker
 - wordcloud of tokens for each sentiment represented in data
+  - bar graphs for token and count
 - finding general sentiment distribution overall
+- vector semantics
+- cosine as similarity metric
 
 *Figure out what to do with PFAs and tokens that have more than one emotion
 

@@ -351,6 +351,24 @@ by_speaker
 
 ```
 
+Plotting composition of general sentiments across speakers:
+```{r}
+install.packages("waffle")
+library(waffle)
+
+comp_waffle <- by_speaker %>%
+  group_by(Categoría) %>% 
+  mutate(Freq=n()) %>%
+  select(Categoría, Freq) %>% 
+  distinct()
+comp_waffle
+  
+comp_waffle
+ggplot(by_speaker_comp, aes(x=Categoría, y=Freq)) +
+  geom_tile(color="gray20", linewidth=0.5)
+
+waffle(comp_waffle)
+```
 
 
 

@@ -295,12 +295,37 @@ wordcloud(words = fear_words$tokens, freq = anger_words$Freq, min.freq = 1,
 Generating bar charts for each sentiment:
 ```{r}
 library(ggplot2)
-fear_plot <- ggplot(fear_words, aes(tokens, Freq)) + 
+
+anger_plot <- ggplot(anger_words, aes(tokens, Freq)) + 
   geom_bar(stat = 'identity', fill="red3", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
-  labs(title = 'Fear Word Frequency')
-  
+  labs(title = 'Anger Word Frequency')
+
+happiness_plot <- ggplot(happiness_words, aes(tokens, Freq)) + 
+  geom_bar(stat = 'identity', fill="gold1", width = 0.5) +
+  scale_x_discrete(guide = guide_axis(n.dodge=3)) +
+  labs(title = 'Happiness Word Frequency')
+
+sadness_plot <- ggplot(sadness_words, aes(tokens, Freq)) + 
+  geom_bar(stat = 'identity', fill="blue4", width = 0.5) +
+  scale_x_discrete(guide = guide_axis(n.dodge=3)) +
+  labs(title = 'Sadness Word Frequency')
+
+surprise_plot <- ggplot(surprise_words, aes(tokens, Freq)) + 
+  geom_bar(stat = 'identity', fill="mediumspringgreen", width = 0.5) +
+  scale_x_discrete(guide = guide_axis(n.dodge=3)) +
+  labs(title = 'Surprise Word Frequency')
+
+disgust_plot <- ggplot(disgust_words, aes(tokens, Freq)) + 
+  geom_bar(stat = 'identity', fill="olivedrab1", width = 0.5) +
+  scale_x_discrete(guide = guide_axis(n.dodge=3)) +
+  labs(title = 'Disgust Word Frequency')
 fear_plot
+
+fear_plot <- ggplot(fear_words, aes(tokens, Freq)) + 
+  geom_bar(stat = 'identity', fill="darkorange", width = 0.5) +
+  scale_x_discrete(guide = guide_axis(n.dodge=3)) +
+  labs(title = 'Fear Word Frequency')
 ```
 
 

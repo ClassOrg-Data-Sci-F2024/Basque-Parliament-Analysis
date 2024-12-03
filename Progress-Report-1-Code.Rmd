@@ -302,11 +302,20 @@ anger_plot <- ggplot(anger_words, aes(tokens, Freq)) +
   labs(title = 'Anger Word Frequency')
 anger_plot
 
-happiness_plot <- ggplot(happiness_words, aes(tokens, Freq)) + 
+happiness_plot1 <- ggplot(happiness_words, aes(tokens, Freq)) + 
+  geom_bar(stat = 'identity', fill="gold1", width = 0.5) +
+  scale_x_discrete(guide = guide_axis(n.dodge=10)) +
+  labs(title = 'Happiness Word Frequency')
+happiness_plot1
+
+happiness_words2 <- happiness_words %>% 
+  filter(Freq > 5)
+happiness_plot2 <- ggplot(happiness_words2, aes(tokens, Freq)) + 
   geom_bar(stat = 'identity', fill="gold1", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
-  labs(title = 'Happiness Word Frequency')
-happiness_plot
+  labs(title = 'Happiness Word Frequency (n>5)')
+happiness_plot2
+  
 
 sadness_plot <- ggplot(sadness_words, aes(tokens, Freq)) + 
   geom_bar(stat = 'identity', fill="blue4", width = 0.5) +
@@ -331,6 +340,15 @@ fear_plot <- ggplot(fear_words, aes(tokens, Freq)) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Fear Word Frequency')
 fear_plot
+```
+Finding general sentiment for each speaker:
+```{r}
+by_speaker <- merged_data3 %>% 
+  count(speaker_id, Categoría, sort=TRUE) %>%
+  filter(n == max(n),
+         .by=speaker_id)
+by_speaker
+
 ```
 
 

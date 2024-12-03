@@ -300,32 +300,37 @@ anger_plot <- ggplot(anger_words, aes(tokens, Freq)) +
   geom_bar(stat = 'identity', fill="red3", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Anger Word Frequency')
+anger_plot
 
 happiness_plot <- ggplot(happiness_words, aes(tokens, Freq)) + 
   geom_bar(stat = 'identity', fill="gold1", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Happiness Word Frequency')
+happiness_plot
 
 sadness_plot <- ggplot(sadness_words, aes(tokens, Freq)) + 
   geom_bar(stat = 'identity', fill="blue4", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Sadness Word Frequency')
+sadness_plot
 
 surprise_plot <- ggplot(surprise_words, aes(tokens, Freq)) + 
   geom_bar(stat = 'identity', fill="mediumspringgreen", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Surprise Word Frequency')
+surprise_plot
 
 disgust_plot <- ggplot(disgust_words, aes(tokens, Freq)) + 
   geom_bar(stat = 'identity', fill="olivedrab1", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Disgust Word Frequency')
-fear_plot
+disgust_plot
 
 fear_plot <- ggplot(fear_words, aes(tokens, Freq)) + 
   geom_bar(stat = 'identity', fill="darkorange", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Fear Word Frequency')
+fear_plot
 ```
 
 
@@ -335,6 +340,7 @@ fear_plot <- ggplot(fear_words, aes(tokens, Freq)) +
 - finding general sentiment for each speaker
 - wordcloud of tokens for each sentiment represented in data
   - bar graphs for token and count
+  - pander to put them together
 - finding general sentiment distribution overall
 - vector semantics
 - cosine as similarity metric

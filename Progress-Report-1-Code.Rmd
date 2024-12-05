@@ -147,6 +147,39 @@ library("readr")
 Importing xlsx file:
 ```{r}
 sel <- read_excel("SEL.xlsx")
+view(sel)
+nrow(sel)
+happiness <- sel %>% 
+  filter(Categoría=='Alegría') %>% 
+  nrow()
+anger <- sel %>% 
+  filter(Categoría=='Enojo') %>% 
+  nrow()
+fear <- sel %>% 
+  filter(Categoría=='Miedo') %>% 
+  nrow()
+disgust <- sel %>% 
+  filter(Categoría=='Repulsión') %>% 
+  nrow()
+surprise <- sel %>% 
+  filter(Categoría=='Sorpresa') %>% 
+  nrow()
+sadness <- sel %>% 
+  filter(Categoría=='Tristeza') %>% 
+  nrow()
+happiness
+anger
+fear
+disgust
+surprise
+sadness
+
+sel_distribution <- sel %>%
+  group_by(Categoría) %>% 
+  mutate(Freq=n()) %>%
+  select(Categoría, Freq) %>% 
+  distinct()
+sel_distribution
 ```
 
 Unnesting sentence tokens (ngrams):
@@ -258,38 +291,38 @@ Generating wordclouds (1) for each sentiment:
 #anger
 set.seed(10)
 wordcloud(words = anger_words$tokens, freq = anger_words$Freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
-          colors=brewer.pal(8, "Dark2"))
+          max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3.5, 0.3),
+          colors=brewer.pal(8, "Set1"))
 
 #happiness
 set.seed(10)
-wordcloud(words = happiness_words$tokens, freq = anger_words$Freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
-          colors=brewer.pal(8, "Dark2"))
+wordcloud(words = happiness_words$tokens, freq = happiness_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.5, scale=c(2.5, 0.3),
+          colors=brewer.pal(8, "Set1"))
 
 #sadness
 set.seed(10)
-wordcloud(words = sadness_words$tokens, freq = anger_words$Freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
-          colors=brewer.pal(8, "Dark2"))
+wordcloud(words = sadness_words$tokens, freq = sadness_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3.5, 0.3),
+          colors=brewer.pal(8, "Set1"))
 
 #surprise
 set.seed(10)
-wordcloud(words = surprise_words$tokens, freq = anger_words$Freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
-          colors=brewer.pal(8, "Dark2"))
+wordcloud(words = surprise_words$tokens, freq = surprise_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3, 0.3),
+          colors=brewer.pal(8, "Set1"))
 
 #disgust
 set.seed(10)
-wordcloud(words = disgust_words$tokens, freq = anger_words$Freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.35,
-          colors=brewer.pal(8, "Dark2"))
+wordcloud(words = disgust_words$tokens, freq = disgust_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3.5, 0.3),
+          colors=brewer.pal(8, "Set1"))
 
 #fear
 set.seed(8)
-wordcloud(words = fear_words$tokens, freq = anger_words$Freq, min.freq = 1,
-          max.words=200, random.order=FALSE, rot.per=0.5,
-          colors=brewer.pal(8, "Paired"))
+wordcloud(words = fear_words$tokens, freq = fear_words$Freq, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3.5, 0.3),
+          colors=brewer.pal(8, "Set1"))
 ```
 
 Generating bar charts for each sentiment:
@@ -345,14 +378,17 @@ Finding general sentiment for each speaker:
 ```{r}
 by_speaker <- merged_data3 %>% 
   count(speaker_id, Categoría, sort=TRUE) %>%
-  filter(n == max(n),
-         .by=speaker_id)
+  filter(n == max(n), .by=speaker_id)
 by_speaker
 
+by_speaker %>% distinct(speaker_id) %>% nrow()
 ```
 
 Plotting composition of general sentiments across speakers:
 ```{r}
+#Out of 122 general sentiments per speaker, find distribution
+#Each square represents each speaker (97 speakers total, some speakers have more than one square)
+#Picture plot as a parliament session, each member represented by one square
 install.packages("waffle")
 library(waffle)
 
@@ -366,6 +402,42 @@ comp_waffle
 waffle(comp_waffle)
 ```
 
+```{r}
+qqnorm(comp_waffle$Freq)
+qqline(comp_waffle$Freq)
+
+qqnorm(sel_distribution$Freq)
+qqline(sel_distribution$Freq)
+
+scores_words <- (comp_waffle$Freq-(mean(comp_waffle$Freq)))/sd(comp_waffle$Freq)
+scores_words
+comp_waffle$Freq
+
+scores_usage <- (sel_distribution$Freq-(mean(sel_distribution$Freq)))/sd(sel_distribution$Freq)
+scores_usage
+sel_distribution$Freq
+
+ggplot(data = sel_distribution, aes(fill=sel_distribution$Categoría, values=Freq)) +
+  geom_waffle(color = "white") +
+  scale_fill_manual(values = c(Alegría = "seagreen4", Enojo = "slateblue1", 
+                               Miedo = "hotpink", Repulsión = "olivedrab3", 
+                               Sorpresa = "gold", Tristeza = "tomato"))
+
+prop_words <- data.frame(Category = c('Happiness', 'Sadness', 
+                                      'Anger', 'Fear', 'Disgust', 
+                                      'Surprise'),
+                         Proportion = c((77/122), (21/122), (12/122), (4/122),
+                                        (3/122), (5/122)))
+prop_words
+
+prop_usage <- data.frame(Category = c('Happiness', 'Sadness', 
+                                      'Anger', 'Fear', 'Disgust', 
+                                      'Surprise'),
+                         Proportion = c((668/2036), (391/2036), (382/2036), (211/2036),
+                                        (209/2036), (175/2036)))
+prop_usage
+```
+
 
 
 ## Analysis Ideas:
@@ -376,6 +448,9 @@ waffle(comp_waffle)
 - finding general sentiment distribution overall
 - vector semantics
 - cosine as similarity metric
+
+-make table for sel distribution per emotion
+-make wordclouds into html widgets
 
 *Figure out what to do with PFAs and tokens that have more than one emotion
 

@@ -93,11 +93,6 @@ small_data_span <- raw_data %>% filter(language == "es")
 view(small_data_span)
 ```
 
-Now removing the 'path' column as it is unnecessary for my analysis:
-```{r}
-small_data_span2 <- small_data_span %>% select(-path)
-view(small_data_span2)
-```
 
 Using stringr to identify utterances/sentences that contain the following keywords. ['hablante', 'euskera', 'lenguaje', 'idioma', 'aprendizaje', 'lingüístic']. This will allow me to perform sentiment analysis only on the utterances that are related in some way to language.
 ```{r}
@@ -144,11 +139,15 @@ library("readxl")
 library("readr")
 ```
 
-Importing xlsx file:
+Reading in Spanish Emotion Lexicon file. Creating a word stemmer....
 ```{r}
 sel <- read_excel("SEL.xlsx")
 view(sel)
 nrow(sel)
+```
+
+Importing xlsx file:
+```{r}
 happiness <- sel %>% 
   filter(Categoría=='Alegría') %>% 
   nrow()

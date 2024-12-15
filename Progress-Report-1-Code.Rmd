@@ -85,26 +85,34 @@ view(raw_data)
 nrow(raw_data)
 ncol(raw_data)
 ```
-
+Starting with 749,945 rows/utterances
 
 Now, filtering to only include rows that are Spanish utterances (exclude Basque and bilingual):
 ```{r}
 small_data_span <- raw_data %>% filter(language == "es")
+nrow(small_data_span)
 view(small_data_span)
 ```
+Now, 524,942 rows/utterances (lost 225,021)
 
-
-Using stringr to identify utterances/sentences that contain the following keywords. ['hablante', 'euskera', 'lenguaje', 'idioma', 'aprendizaje', 'lingüístic']. This will allow me to perform sentiment analysis only on the utterances that are related in some way to language.
+Using stringr to identify utterances/sentences that contain the following keywords. ['hablante', 'euskera', 'lenguaje', 'idioma', 'aprendizaje', 'lingüístic']. This will allow me to perform sentiment analysis only on the utterances that are related in some way to language. Specifically, using str_detect() will allow me to identify occurrences of both 'hablante/es', 'lenguaje/es', 'lingüística/o/as/os'. Further, I created another vector that is used to detect occurrences of ['castellan', 'galleg'], which detects both 'castellano/a' and 'gallego/a'.
 ```{r}
-keywords_vec <- ('hablante|euskera|lenguaje|idioma|aprendizaje|lingüístic')
-keywords_col <- small_data_span2$sentence %>%
+keywords_vec <- ('hablante|euskera|lenguaje|idioma|lingüístic')
+keywords_vec1 <- ('castellan|galleg')
+keywords_col <- small_data_span$sentence %>%
   str_detect(keywords_vec)
+
+keywords_col2 <- small_data_span$sentence %>% 
+  str_detect(keywords_vec1)
+
+small_data_span2 <- small_data_span %>%
+  mutate(keywords = keywords_col) %>% 
+  mutate(non_keywords = keywords_col2)
+
 small_data_span3 <- small_data_span2 %>%
-  mutate(keywords = keywords_col)
+  filter(keywords == TRUE) %>% 
+  filter(non_keywords == FALSE)
 view(small_data_span3)
-small_data_span4 <- small_data_span3 %>%
-  filter(keywords == TRUE)
-view(small_data_span4)
 ```
 
 Reducing size by only including 300 random rows:

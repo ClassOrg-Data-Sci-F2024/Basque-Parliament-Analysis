@@ -93,7 +93,7 @@ small_data_span <- raw_data %>% filter(language == "es")
 nrow(small_data_span)
 view(small_data_span)
 ```
-Now, 524,942 rows/utterances (lost 225,021)
+Now 524,942 rows/utterances (lost 225,021)
 
 Using stringr to identify utterances/sentences that contain the following keywords. ['hablante', 'euskera', 'lenguaje', 'idioma', 'aprendizaje', 'lingüístic']. This will allow me to perform sentiment analysis only on the utterances that are related in some way to language. Specifically, using str_detect() will allow me to identify occurrences of both 'hablante/es', 'lenguaje/es', 'lingüística/o/as/os'. Further, I created another vector that is used to detect occurrences of ['castellan', 'galleg'], which detects both 'castellano/a' and 'gallego/a'.
 ```{r}
@@ -113,16 +113,17 @@ small_data_span3 <- small_data_span2 %>%
   filter(keywords == TRUE) %>% 
   filter(non_keywords == FALSE)
 view(small_data_span3)
+nrow(small_data_span3)
 ```
+Now 3209 rows (lost 521,715 rows)
 
-Reducing size by only including 300 random rows:
+
+Changing name of dataframe:
 ```{r}
-set.seed(10)
-sampled_data <- small_data_span4 %>% slice_sample(n=nrow(small_data_span4))
-view(sampled_data)
+sampled_data <- small_data_span3
 ```
 
-Now exporting dataframe to .csv file (annotations still needed):
+Now exporting dataframe to .csv file:
 ```{r}
 write_csv(sampled_data, "sampled_data.csv")
 ```
@@ -147,31 +148,54 @@ library("readxl")
 library("readr")
 ```
 
-Reading in Spanish Emotion Lexicon file. Creating a word stemmer....
+Reading in Spanish Emotion Lexicon file:
 ```{r}
 sel <- read_excel("SEL.xlsx")
 view(sel)
 nrow(sel)
 ```
 
+Viewed final plots and assessed which words carried less emotional 'weight'. Removed these words from the dataframe as they do not contribute much to the analysis. Additionally, created word stemmer to isolate emotion words without gender suffix, as all gendered words in the dataset are masculine:
+```{r}
+install.packages("SnowballC")
+library("SnowballC")
+
+low_ew_vec <- ('cuenta|solo|llevar|llegar')
+low_ew <- sel$Palabra %>% 
+  str_detect(low_ew_vec)
+low_ew2 <- sel %>% 
+  mutate('LowEmotion' = low_ew)
+sel2 <- sel %>% 
+  filter(low_ew == FALSE)
+
+stemmed_sel <- wordStem(sel2$Palabra, language = "spanish")
+stemmed_sel <- sel2 %>% 
+  mutate(Stems = stemmed_sel) %>% select('#', Stems, PFA, Categoría, -Palabra)
+stemmed_sel2 <- stemmed_sel %>% 
+  group_by(Categoría) %>% 
+  distinct(Stems) %>% 
+  ungroup()
+stemmed_sel2
+```
+
 Importing xlsx file:
 ```{r}
-happiness <- sel %>% 
+happiness <- stemmed_sel2 %>% 
   filter(Categoría=='Alegría') %>% 
   nrow()
-anger <- sel %>% 
+anger <- stemmed_sel2 %>% 
   filter(Categoría=='Enojo') %>% 
   nrow()
-fear <- sel %>% 
+fear <- stemmed_sel2 %>% 
   filter(Categoría=='Miedo') %>% 
   nrow()
-disgust <- sel %>% 
+disgust <- stemmed_sel2 %>% 
   filter(Categoría=='Repulsión') %>% 
   nrow()
-surprise <- sel %>% 
+surprise <- stemmed_sel2 %>% 
   filter(Categoría=='Sorpresa') %>% 
   nrow()
-sadness <- sel %>% 
+sadness <- stemmed_sel2 %>% 
   filter(Categoría=='Tristeza') %>% 
   nrow()
 happiness
@@ -181,7 +205,7 @@ disgust
 surprise
 sadness
 
-sel_distribution <- sel %>%
+sel_distribution <- stemmed_sel2 %>%
   group_by(Categoría) %>% 
   mutate(Freq=n()) %>%
   select(Categoría, Freq) %>% 
@@ -199,24 +223,21 @@ sampled_data_ngrams <- sampled_data %>%
 view(sampled_data_ngrams)
 ```
 
-Viewing and assessing SEL corpus:
+Stemming sentence tokens (ngrams):
 ```{r}
-view(sel)
+token_stems <- wordStem(sampled_data_ngrams$tokens, language = "spanish")
+stemmed_ngrams <- sampled_data_ngrams %>% 
+  mutate(Stems = token_stems)
+stemmed_ngrams
 ```
+
 
 The following two code chunks were inspired by a project by Kayleah Griffen, which can be found at the following site: https://rpubs.com/klgriffen96/data607_hw10
-
-Adjusting column names so that both dataframes are conducive to the inner_join() function:
-```{r}
-sel <- sel %>% 
-  rename(`tokens` = Palabra)
-view(sel)
-```
 
 Does word correspond to a particular emotion?
 ```{r}
 merged_data <- sampled_data_ngrams %>% 
-  inner_join(sel, by="tokens", multiple = "all", unmatched = "drop", relationship = "many-to-many") %>% 
+  inner_join(stemmed_sel2, by="Stems", multiple = "all", unmatched = "drop", relationship = "many-to-many") %>% 
   group_by(sentence, speaker_id)
 
 view(merged_data)

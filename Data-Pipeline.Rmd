@@ -172,15 +172,11 @@ sel2 <- sel %>%
 stemmed_sel <- wordStem(sel2$Palabra, language = "spanish")
 stemmed_sel <- sel2 %>% 
   mutate(Stems = stemmed_sel) %>% select('#', Stems, PFA, Categoría, -Palabra)
-stemmed_sel2 <- stemmed_sel %>% 
-  group_by(Categoría) %>% 
-  distinct(Stems) %>% 
-  ungroup()
-nrow(stemmed_sel2)
+nrow(stemmed_sel)
 ```
-Some of the stems above were originally duplicate stems, with multiple of the same stem occurring in the same emotion. I wanted to keep duplicate stems that were duplicated across different emotions, but delete the ones that were part of the same emotion. In this process, I lost 457 stems.
 
-Importing xlsx file:
+
+Finding number of emotion words per emotion:
 ```{r}
 happiness <- stemmed_sel2 %>% 
   filter(Categoría=='Alegría') %>% 

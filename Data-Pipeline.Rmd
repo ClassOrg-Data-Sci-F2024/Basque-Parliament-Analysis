@@ -236,7 +236,7 @@ The following two code chunks were inspired by a project by Kayleah Griffen, whi
 
 Does word correspond to a particular emotion?
 ```{r}
-merged_data <- sampled_data_ngrams %>% 
+merged_data <- stemmed_ngrams %>% 
   inner_join(stemmed_sel2, by="Stems", multiple = "all", unmatched = "drop", relationship = "many-to-many") %>% 
   group_by(sentence, speaker_id)
 
@@ -402,6 +402,7 @@ fear_plot <- ggplot(fear_words, aes(tokens, Freq)) +
   labs(title = 'Fear Word Frequency')
 fear_plot
 ```
+
 Finding general sentiment for each speaker:
 ```{r}
 by_speaker <- merged_data3 %>% 

@@ -154,6 +154,7 @@ sel <- read_excel("SEL.xlsx")
 view(sel)
 nrow(sel)
 ```
+Starting with 2,036 emotion words in the SEL.
 
 Viewed final plots and assessed which words carried less emotional 'weight'. Removed these words from the dataframe as they do not contribute much to the analysis. Additionally, created word stemmer to isolate emotion words without gender suffix, as all gendered words in the dataset are masculine:
 ```{r}
@@ -175,8 +176,9 @@ stemmed_sel2 <- stemmed_sel %>%
   group_by(Categoría) %>% 
   distinct(Stems) %>% 
   ungroup()
-stemmed_sel2
+nrow(stemmed_sel2)
 ```
+Some of the stems above were originally duplicate stems, with multiple of the same stem occurring in the same emotion. I wanted to keep duplicate stems that were duplicated across different emotions, but delete the ones that were part of the same emotion. In this process, I lost 457 stems.
 
 Importing xlsx file:
 ```{r}
@@ -213,7 +215,7 @@ sel_distribution <- stemmed_sel2 %>%
 sel_distribution
 ```
 
-Unnesting sentence tokens (ngrams):
+Tokenizing sentences (ngrams):
 ```{r}
 library(dplyr)
 library(tidytext)
@@ -261,57 +263,55 @@ merged_data3 <- merged_data %>%
   ungroup()
 merged_data3
 ```
-
+Below, I am grouping each emotion and its corresponding tokens into an object. In addition to grouping them, I also deleted duplicate stems that would otherwise present problems in my analysis and kept only the columns that prove to be necessary in plotting the data. I want to avoid certain tokens being plotted multiple times if they are part of the same word in the same utterance.
 ```{r}
 anger_words <- merged_data3 %>% 
   filter(Categoría=="Enojo") %>% 
-  group_by(tokens) %>% 
+  group_by(Stems) %>% 
   mutate(Freq = n()) %>% 
   ungroup() %>% 
-  select(tokens, Freq, Categoría) %>% 
-  distinct(tokens, .keep_all = TRUE)
+  select(Stems, Freq, Categoría) %>% 
+  distinct(Stems, .keep_all = TRUE)
 
 happiness_words <- merged_data3 %>% 
   filter(Categoría=="Alegría") %>% 
-  group_by(tokens) %>% 
+  group_by(Stems) %>% 
   mutate(Freq = n()) %>% 
   ungroup() %>% 
-  select(tokens, Freq, Categoría) %>% 
-  distinct(tokens, .keep_all = TRUE)
+  select(Stems, Freq, Categoría) %>% 
+  distinct(Stems, .keep_all = TRUE)
 
 sadness_words <- merged_data3 %>% 
   filter(Categoría=="Tristeza") %>% 
-  group_by(tokens) %>% 
+  group_by(Stems) %>% 
   mutate(Freq = n()) %>% 
   ungroup() %>% 
-  select(tokens, Freq, Categoría) %>% 
-  distinct(tokens, .keep_all = TRUE)
+  select(Stems, Freq, Categoría) %>% 
+  distinct(Stems, .keep_all = TRUE)
 
 surprise_words <- merged_data3 %>% 
   filter(Categoría=="Sorpresa") %>% 
-  group_by(tokens) %>% 
+  group_by(Stems) %>% 
   mutate(Freq = n()) %>% 
   ungroup() %>% 
-  select(tokens, Freq, Categoría) %>% 
-  distinct(tokens, .keep_all = TRUE)
+  select(Stems, Freq, Categoría) %>% 
+  distinct(Stems, .keep_all = TRUE)
 
 disgust_words <- merged_data3 %>% 
   filter(Categoría=="Repulsión") %>% 
-  group_by(tokens) %>% 
+  group_by(Stems) %>% 
   mutate(Freq = n()) %>% 
   ungroup() %>% 
-  select(tokens, Freq, Categoría) %>% 
-  distinct(tokens, .keep_all = TRUE)
+  select(Stems, Freq, Categoría) %>% 
+  distinct(Stems, .keep_all = TRUE)
 
 fear_words <- merged_data3 %>% 
   filter(Categoría=="Miedo") %>% 
-  group_by(tokens) %>% 
+  group_by(Stems) %>% 
   mutate(Freq = n()) %>% 
   ungroup() %>% 
-  select(tokens, Freq, Categoría) %>% 
-  distinct(tokens, .keep_all = TRUE)
-
-view(anger_words)
+  select(Stems, Freq, Categoría) %>% 
+  distinct(Stems, .keep_all = TRUE)
 ```
 
 Generating wordclouds (1) for each sentiment:

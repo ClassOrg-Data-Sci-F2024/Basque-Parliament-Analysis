@@ -81,7 +81,6 @@ raw_data <- rbind(raw_data1, raw_data2)
 
 Viewing new, combined dataframe:
 ```{r}
-view(raw_data)
 nrow(raw_data)
 ncol(raw_data)
 ```
@@ -91,7 +90,6 @@ Now, filtering to only include rows that are Spanish utterances (exclude Basque 
 ```{r}
 small_data_span <- raw_data %>% filter(language == "es")
 nrow(small_data_span)
-view(small_data_span)
 ```
 Now 524,942 rows/utterances (lost 225,021)
 
@@ -112,7 +110,7 @@ small_data_span2 <- small_data_span %>%
 small_data_span3 <- small_data_span2 %>%
   filter(keywords == TRUE) %>% 
   filter(non_keywords == FALSE)
-view(small_data_span3)
+
 nrow(small_data_span3)
 ```
 Now 3209 rows (lost 521,715 rows)
@@ -151,17 +149,15 @@ library("readr")
 Reading in Spanish Emotion Lexicon file:
 ```{r}
 sel <- read_excel("SEL.xlsx")
-view(sel)
 nrow(sel)
 ```
 Starting with 2,036 emotion words in the SEL.
 
 Viewed final plots and assessed which words carried less emotional 'weight'. Removed these words from the dataframe as they do not contribute much to the analysis. Additionally, created word stemmer to isolate emotion words without gender suffix, as all gendered words in the dataset are masculine:
 ```{r}
-install.packages("SnowballC")
 library("SnowballC")
 
-low_ew_vec <- ('cuenta|solo|llevar|llegar')
+low_ew_vec <- ('cuent|solo|sola|llev|lleg|sab|dec|dich|ped|mano')
 low_ew <- sel$Palabra %>% 
   str_detect(low_ew_vec)
 low_ew2 <- sel %>% 
@@ -173,27 +169,32 @@ stemmed_sel <- wordStem(sel2$Palabra, language = "spanish")
 stemmed_sel <- sel2 %>% 
   mutate(Stems = stemmed_sel) %>% select('#', Stems, PFA, Categoría, -Palabra)
 nrow(stemmed_sel)
-```
 
+#If stem occurs multiple times in same emotion, delete duplicates. If stem occurs multiple times across different emotions, keep duplicates:
+stemmed_sel <- stemmed_sel %>% group_by(Categoría) %>% 
+  distinct(Stems, .keep_all = TRUE)
+nrow(stemmed_sel)
+```
+Now, 1,548 tokens in SEL (deleted all occurrences of words with low emotional weight, and all duplicates of stems that occurred within the same emotion)
 
 Finding number of emotion words per emotion:
 ```{r}
-happiness <- stemmed_sel2 %>% 
+happiness <- stemmed_sel %>% 
   filter(Categoría=='Alegría') %>% 
   nrow()
-anger <- stemmed_sel2 %>% 
+anger <- stemmed_sel %>% 
   filter(Categoría=='Enojo') %>% 
   nrow()
-fear <- stemmed_sel2 %>% 
+fear <- stemmed_sel %>% 
   filter(Categoría=='Miedo') %>% 
   nrow()
-disgust <- stemmed_sel2 %>% 
+disgust <- stemmed_sel %>% 
   filter(Categoría=='Repulsión') %>% 
   nrow()
-surprise <- stemmed_sel2 %>% 
+surprise <- stemmed_sel %>% 
   filter(Categoría=='Sorpresa') %>% 
   nrow()
-sadness <- stemmed_sel2 %>% 
+sadness <- stemmed_sel %>% 
   filter(Categoría=='Tristeza') %>% 
   nrow()
 happiness
@@ -203,7 +204,7 @@ disgust
 surprise
 sadness
 
-sel_distribution <- stemmed_sel2 %>%
+sel_distribution <- stemmed_sel %>%
   group_by(Categoría) %>% 
   mutate(Freq=n()) %>%
   select(Categoría, Freq) %>% 
@@ -227,19 +228,21 @@ token_stems <- wordStem(sampled_data_ngrams$tokens, language = "spanish")
 stemmed_ngrams <- sampled_data_ngrams %>% 
   mutate(Stems = token_stems)
 stemmed_ngrams
+nrow(stemmed_ngrams)
 ```
-
+66,078 stems total (before inner-joining with SEL)
 
 The following two code chunks were inspired by a project by Kayleah Griffen, which can be found at the following site: https://rpubs.com/klgriffen96/data607_hw10
 
 Does word correspond to a particular emotion?
 ```{r}
 merged_data <- stemmed_ngrams %>% 
-  inner_join(stemmed_sel2, by="Stems", multiple = "all", unmatched = "drop", relationship = "many-to-many") %>% 
-  group_by(sentence, speaker_id)
+  inner_join(stemmed_sel2, by="Stems", multiple = "all", unmatched = "drop", relationship = "many-to-many")
 
-view(merged_data)
+nrow(merged_data)
 ```
+2842 stems after inner-joining with SEL (stems that did not have matches in the SEL were dropped)
+
 
 Grouping by sentence/utterance:
 ```{r}
@@ -308,43 +311,45 @@ fear_words <- merged_data3 %>%
   ungroup() %>% 
   select(Stems, Freq, Categoría) %>% 
   distinct(Stems, .keep_all = TRUE)
+
+anger_words
 ```
 
 Generating wordclouds (1) for each sentiment:
 ```{r}
 #anger
 set.seed(10)
-wordcloud(words = anger_words$tokens, freq = anger_words$Freq, min.freq = 1,
+wordcloud(words = anger_words$Stems, freq = anger_words$Freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3.5, 0.3),
           colors=brewer.pal(8, "Set1"))
 
 #happiness
 set.seed(10)
-wordcloud(words = happiness_words$tokens, freq = happiness_words$Freq, min.freq = 1,
+wordcloud(words = happiness_words$Stems, freq = happiness_words$Freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.5, scale=c(2.5, 0.3),
           colors=brewer.pal(8, "Set1"))
 
 #sadness
 set.seed(10)
-wordcloud(words = sadness_words$tokens, freq = sadness_words$Freq, min.freq = 1,
+wordcloud(words = sadness_words$Stems, freq = sadness_words$Freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3.5, 0.3),
           colors=brewer.pal(8, "Set1"))
 
 #surprise
 set.seed(10)
-wordcloud(words = surprise_words$tokens, freq = surprise_words$Freq, min.freq = 1,
+wordcloud(words = surprise_words$Stems, freq = surprise_words$Freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3, 0.3),
           colors=brewer.pal(8, "Set1"))
 
 #disgust
 set.seed(10)
-wordcloud(words = disgust_words$tokens, freq = disgust_words$Freq, min.freq = 1,
+wordcloud(words = disgust_words$Stems, freq = disgust_words$Freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3.5, 0.3),
           colors=brewer.pal(8, "Set1"))
 
 #fear
 set.seed(8)
-wordcloud(words = fear_words$tokens, freq = fear_words$Freq, min.freq = 1,
+wordcloud(words = fear_words$Stems, freq = fear_words$Freq, min.freq = 1,
           max.words=200, random.order=FALSE, rot.per=0.5, scale=c(3.5, 0.3),
           colors=brewer.pal(8, "Set1"))
 ```
@@ -353,13 +358,13 @@ Generating bar charts for each sentiment:
 ```{r}
 library(ggplot2)
 
-anger_plot <- ggplot(anger_words, aes(tokens, Freq)) + 
+anger_plot <- ggplot(anger_words, aes(Stems, Freq)) + 
   geom_bar(stat = 'identity', fill="red3", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Anger Word Frequency')
 anger_plot
 
-happiness_plot1 <- ggplot(happiness_words, aes(tokens, Freq)) + 
+happiness_plot1 <- ggplot(happiness_words, aes(Stems, Freq)) + 
   geom_bar(stat = 'identity', fill="gold1", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=10)) +
   labs(title = 'Happiness Word Frequency')
@@ -367,32 +372,32 @@ happiness_plot1
 
 happiness_words2 <- happiness_words %>% 
   filter(Freq > 5)
-happiness_plot2 <- ggplot(happiness_words2, aes(tokens, Freq)) + 
+happiness_plot2 <- ggplot(happiness_words2, aes(Stems, Freq)) + 
   geom_bar(stat = 'identity', fill="gold1", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Happiness Word Frequency (n>5)')
 happiness_plot2
   
 
-sadness_plot <- ggplot(sadness_words, aes(tokens, Freq)) + 
+sadness_plot <- ggplot(sadness_words, aes(Stems, Freq)) + 
   geom_bar(stat = 'identity', fill="blue4", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Sadness Word Frequency')
 sadness_plot
 
-surprise_plot <- ggplot(surprise_words, aes(tokens, Freq)) + 
+surprise_plot <- ggplot(surprise_words, aes(Stems, Freq)) + 
   geom_bar(stat = 'identity', fill="mediumspringgreen", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Surprise Word Frequency')
 surprise_plot
 
-disgust_plot <- ggplot(disgust_words, aes(tokens, Freq)) + 
+disgust_plot <- ggplot(disgust_words, aes(Stems, Freq)) + 
   geom_bar(stat = 'identity', fill="olivedrab1", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Disgust Word Frequency')
 disgust_plot
 
-fear_plot <- ggplot(fear_words, aes(tokens, Freq)) + 
+fear_plot <- ggplot(fear_words, aes(Stems, Freq)) + 
   geom_bar(stat = 'identity', fill="darkorange", width = 0.5) +
   scale_x_discrete(guide = guide_axis(n.dodge=3)) +
   labs(title = 'Fear Word Frequency')

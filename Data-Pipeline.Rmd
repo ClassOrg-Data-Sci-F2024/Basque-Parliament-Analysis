@@ -219,7 +219,6 @@ library(tidytext)
 
 sampled_data_ngrams <- sampled_data %>%
   unnest_tokens(tokens, sentence, token="words", drop=FALSE, to_lower=TRUE)
-view(sampled_data_ngrams)
 ```
 
 Stemming sentence tokens (ngrams):
@@ -433,12 +432,6 @@ waffle(comp_waffle)
 ```
 
 ```{r}
-qqnorm(comp_waffle$Freq)
-qqline(comp_waffle$Freq)
-
-qqnorm(sel_distribution$Freq)
-qqline(sel_distribution$Freq)
-
 scores_words <- (comp_waffle$Freq-(mean(comp_waffle$Freq)))/sd(comp_waffle$Freq)
 scores_words
 comp_waffle$Freq

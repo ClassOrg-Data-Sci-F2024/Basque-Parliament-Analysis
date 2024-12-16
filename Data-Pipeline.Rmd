@@ -236,7 +236,7 @@ The following two code chunks were inspired by a project by Kayleah Griffen, whi
 Does word correspond to a particular emotion?
 ```{r}
 merged_data <- stemmed_ngrams %>% 
-  inner_join(stemmed_sel2, by="Stems", multiple = "all", unmatched = "drop", relationship = "many-to-many")
+  inner_join(stemmed_sel, by="Stems", multiple = "all", unmatched = "drop", relationship = "many-to-many")
 
 nrow(merged_data)
 ```
@@ -418,7 +418,6 @@ Plotting composition of general sentiments across speakers:
 #Out of 122 general sentiments per speaker, find distribution
 #Each square represents each speaker (97 speakers total, some speakers have more than one square)
 #Picture plot as a parliament session, each member represented by one square
-install.packages("waffle")
 library(waffle)
 
 comp_waffle <- by_speaker %>%
@@ -468,12 +467,4 @@ prop_usage
 - wordcloud of tokens for each sentiment represented in data
   - bar graphs for token and count
   - pander to put them together
-- finding general sentiment distribution overall
-- vector semantics
-- cosine as similarity metric
-
--make table for sel distribution per emotion
--make wordclouds into html widgets
-
-*Figure out what to do with PFAs and tokens that have more than one emotion
 

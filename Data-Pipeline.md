@@ -580,27 +580,6 @@ by_speaker %>% distinct(speaker_id) %>% nrow()
 
     ## [1] 111
 
-``` r
-by_speaker
-```
-
-    ## # A tibble: 128 × 3
-    ##    speaker_id Categoría     n
-    ##         <dbl> <chr>     <int>
-    ##  1        290 Alegría     240
-    ##  2        353 Alegría      85
-    ##  3        189 Alegría      81
-    ##  4        355 Alegría      62
-    ##  5        380 Alegría      62
-    ##  6        128 Alegría      52
-    ##  7        275 Alegría      51
-    ##  8        463 Alegría      50
-    ##  9        462 Alegría      46
-    ## 10        530 Alegría      45
-    ## # ℹ 118 more rows
-
-Speaker with the most tokens was Speaker \#290 with 240 tokens,
-
 Plotting composition of general sentiments across speakers:
 
 ``` r

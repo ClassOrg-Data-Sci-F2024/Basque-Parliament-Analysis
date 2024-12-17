@@ -1,6 +1,6 @@
 
 ---
-title: "Progress-Report-1"
+title: "Data-Pipeline"
 author: "Claire McLean"
 date: "2024-10-28"
 output: github_document
@@ -19,7 +19,7 @@ url          = { https://huggingface.co/datasets/gttsehu/basque_parliament_1 },
 doi          = { 10.57967/hf/2485 },
 publisher    = { Hugging Face }
 }
-# Progress Report 1
+# Data Pipeline
 ## Here, I will begin the next steps of my data cleaning.
 ## Step 1: Performed in Python
 In this step, I wrote a script to filter the train.tsv file provided in the Hugging Face dataset folder to include only the rows/utterances that contain the following keywords:
@@ -458,6 +458,52 @@ prop_usage <- data.frame(Category = c('Happiness', 'Sadness',
                          Proportion = c((668/2036), (391/2036), (382/2036), (211/2036),
                                         (209/2036), (175/2036)))
 prop_usage
+```
+
+## Part 2: Comparing above distribution with non-related 'economy' distribution
+
+Here, I will follow many of the steps above to create a new distribution that is based off of a brand-new keyword vector. Since all data is stemmed, the vector I chose only contains one item: 'econom'
+```{r}
+#Creating new dataframe just with economy-related stem
+keywords_econ <- ('econom')
+
+keywords_col_econ <- small_data_span$sentence %>% 
+  str_detect(keywords_econ)
+
+small_data_econ <- small_data_span %>%
+  mutate(keywords = keywords_col_econ)
+
+small_data_econ <- small_data_econ %>%
+  filter(keywords == TRUE)
+
+#Tokenizing sentences
+small_data_econ <- small_data_econ %>%
+  unnest_tokens(tokens, sentence, token="words", drop=FALSE, to_lower=TRUE)
+
+#Stemming sentence tokens
+econ_stems <- wordStem(small_data_econ$tokens, language = "spanish")
+stemmed_econ_ngrams <- small_data_econ %>% 
+  mutate(Stems = econ_stems)
+
+#Inner-joining stemmed SEL set and newly stemmed economy set
+merged_econ_data <- stemmed_econ_ngrams %>% 
+  inner_join(stemmed_sel, by="Stems", multiple = "all", unmatched = "drop", relationship = "many-to-many")
+
+#Finding distribution of sentiments across individual speakers
+by_speaker_econ <- merged_econ_data %>% 
+  count(speaker_id, Categoría, sort=TRUE) %>%
+  filter(n == max(n), .by=speaker_id)
+by_speaker_econ
+
+#Plotting with waffle()
+econ_waffle <- by_speaker_econ %>%
+  group_by(Categoría) %>% 
+  mutate(Freq=n()) %>%
+  select(Categoría, Freq) %>% 
+  distinct()
+econ_waffle
+
+waffle(econ_waffle)
 ```
 
 

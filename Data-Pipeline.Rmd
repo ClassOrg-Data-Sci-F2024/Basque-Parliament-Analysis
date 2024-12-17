@@ -394,11 +394,7 @@ by_speaker <- merged_data3 %>%
 
 #Number of distinct speakers
 by_speaker %>% distinct(speaker_id) %>% nrow()
-
-by_speaker
 ```
-Speaker with the most tokens was Speaker #290 with 240 tokens, 
-
 
 Plotting composition of general sentiments across speakers:
 ```{r}

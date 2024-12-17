@@ -32,24 +32,38 @@ Click [here](Data-Pipeline.md) for more detailed information on cleaning and pro
 
 Once the data were joined, the first step in the analysis was conducting a frequency distribution in the form of a series of bar plots and wordclouds. Each bar plot and word cloud below displays the sentiment-annotated stems that were present in the speech data. The bar plots were adjusted to show only the most frequent stems, while the wordclouds reflected all of the annotated data.
 
+### Anger Plots
 ![Anger Bar Plot](Data-Pipeline_files/figure-gfm/unnamed-chunk-24-1.png)
 ![Anger Wordcloud](Data-Pipeline_files/figure-gfm/unnamed-chunk-23-1.png)
 
+### Happiness Plots
 ![Happiness Bar Plot](Data-Pipeline_files/figure-gfm/unnamed-chunk-24-2.png)
 ![Happiness Wordcloud](Data-Pipeline_files/figure-gfm/unnamed-chunk-23-2.png)
 
+### Sadness Plots
 ![Sadness Bar Plot](Data-Pipeline_files/figure-gfm/unnamed-chunk-24-3.png)
 ![Sadness Wordcloud](Data-Pipeline_files/figure-gfm/unnamed-chunk-23-3.png)
 
+### Surprise Plots
 ![Surprise Bar Plot](Data-Pipeline_files/figure-gfm/unnamed-chunk-24-4.png)
 ![Surprise Wordcloud](Data-Pipeline_files/figure-gfm/unnamed-chunk-23-4.png)
 
+### Disgust Plots
 ![Disgust Bar Plot](Data-Pipeline_files/figure-gfm/unnamed-chunk-24-5.png)
 ![Disgust Wordcloud](Data-Pipeline_files/figure-gfm/unnamed-chunk-23-5.png)
 
+### Fear Plots
 ![Fear Bar Plot](Data-Pipeline_files/figure-gfm/unnamed-chunk-24-6.png)
 ![Fear Wordcloud](Data-Pipeline_files/figure-gfm/unnamed-chunk-23-6.png)
 
+As shown in the above plots the most common stems in the speech data associated with each sentiment are as follows: Anger: 'exces', Happiness: 'mejor', Sadness: 'part', Surprise: 'consegu', Disgust: 'mal', Fear: 'tem'.
+
+An additional component of the study is to demonstrate the composition of general sentiments across speakers. In total, the data consists of 111 unique speakers total. The most frequent emotion expressed by each speaker was calculated. As some speakers presented utterances that were associated with more than one sentiment at an equal frequency, these additional sentiments were also taken into consideration. 128 sentiments were distributed across the 111 unique speakers. The below waffle plot can be pictured as physical parliament session, each member represented by one (or more) squares.
+
+### Sentiment Per Speaker across Speech Data
+![Usage Distribution Waffle](Data-Pipeline_files/figure-gfm/unnamed-chunk-26-1.png)
+
+In order to produce a meaningful analysis, the above sentiment distribution must be compared with (1) the sentiment distribution across the entire SEL as some sentiment categories contained more sentiment tokens than others and (2) the sentiment distribution across an additional reference set--specifically one that is based on a keyword set that is not language-oriented. For the below analysis, the keyword stem used was ['econom'] to isolate utterances that are related to economy. Both the general SEL sentiment distribution and the economy reference distribution will assist in analyzing the most prevalent emotions in Basque language-related speech.
 
 
 

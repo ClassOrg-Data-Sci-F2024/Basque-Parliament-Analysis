@@ -111,15 +111,9 @@ nrow(small_data_span3)
 ```
 Now 3209 rows (lost 521,715 rows)
 
-
 Changing name of dataframe:
 ```{r}
 sampled_data <- small_data_span3
-```
-
-Now exporting dataframe to .csv file:
-```{r}
-write_csv(sampled_data, "sampled_data.csv")
 ```
 
 ## Some basic stats of cleaned Parliament data:

@@ -416,34 +416,33 @@ waffle(comp_waffle)
 
 Creating waffle plot for general SEL sentiment distribution (1), creating dataframe for proportions of SEL words to sentiments (2), and creating dataframe for proportions of speakers to to sentiments
 ```{r}
+library(knitr)
+
 ggplot(data = sel_distribution, aes(fill=sel_distribution$Categoría, values=Freq)) +
   geom_waffle(color = "white") +
   scale_fill_manual(values = c(Alegría = "seagreen4", Enojo = "slateblue1", 
                                Miedo = "hotpink", Repulsión = "olivedrab3", 
                                Sorpresa = "gold", Tristeza = "tomato"))
 
-prop_words <- data.frame(Category = c('Happiness', 'Anger', 
-                                      'Fear', 'Disgust', 'Surprise', 
-                                      'Sadness'),
-                         Proportion = c((sel_distribution$Freq[1])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[2])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[3])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[4])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[5])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[6])/sum(sel_distribution$Freq)))
+prop_words <- matrix(c((sel_distribution$Freq[1])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[2])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[3])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[4])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[5])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[6])/sum(sel_distribution$Freq)), ncol=1)
+rownames(prop_words) <- c('Happiness', 'Anger', 'Fear', 'Disgust', 'Surprise', 'Sadness')
+colnames(prop_words) <- c('Proportion')
+kable(prop_words)
 
-prop_words
-
-prop_usage <- data.frame(Category = c('Happiness', 'Sadness', 
-                                      'Anger', 'Fear', 'Surprise', 
-                                      'Disgust'),
-                         Proportion = c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[2])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[3])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[4])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[5])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[6])/sum(comp_waffle$Freq)))
-prop_usage
+prop_usage <- matrix(c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[2])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[3])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[4])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[5])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[6])/sum(comp_waffle$Freq)), ncol=1)
+rownames(prop_usage) <- c('Happiness', 'Sadness', 'Anger', 'Fear', 'Surprise', 'Disgust')
+colnames(prop_usage) <- c('Proportion')
+kable(prop_usage)
 ```
 
 ## Step 10: Comparing Parliament sentence sentiment distribution with non-related 'economy' distribution

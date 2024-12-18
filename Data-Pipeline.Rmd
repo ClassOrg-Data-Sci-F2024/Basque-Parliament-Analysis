@@ -417,6 +417,7 @@ waffle(comp_waffle)
 Creating waffle plot for general SEL sentiment distribution (1), creating dataframe for proportions of SEL words to sentiments (2), and creating dataframe for proportions of speakers to to sentiments
 ```{r}
 library(knitr)
+library(kableExtra)
 
 ggplot(data = sel_distribution, aes(fill=sel_distribution$Categoría, values=Freq)) +
   geom_waffle(color = "white") +
@@ -432,7 +433,7 @@ prop_words <- matrix(c((sel_distribution$Freq[1])/sum(sel_distribution$Freq),
                        (sel_distribution$Freq[6])/sum(sel_distribution$Freq)), ncol=1)
 rownames(prop_words) <- c('Happiness', 'Anger', 'Fear', 'Disgust', 'Surprise', 'Sadness')
 colnames(prop_words) <- c('Proportion')
-print(kable(prop_words))
+kable(prop_words) %>% save_kable("prop_words.txt")
 
 prop_usage <- matrix(c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[2])/sum(comp_waffle$Freq),
@@ -442,7 +443,7 @@ prop_usage <- matrix(c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[6])/sum(comp_waffle$Freq)), ncol=1)
 rownames(prop_usage) <- c('Happiness', 'Sadness', 'Anger', 'Fear', 'Surprise', 'Disgust')
 colnames(prop_usage) <- c('Proportion')
-print(kable(prop_usage))
+kable(prop_usage) %>% save_kable("usage_words.txt")
 ```
 
 ## Step 10: Comparing Parliament sentence sentiment distribution with non-related 'economy' distribution
@@ -488,13 +489,15 @@ econ_waffle <- by_speaker_econ %>%
 waffle(econ_waffle)
 
 #Gathering proportions
-econ_usage <- data.frame(Category = c('Happiness', 'Sadness', 
-                                      'Anger', 'Disgust', 'Surprise'),
-                         Proportion = c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[2])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[3])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[4])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[5])/sum(comp_waffle$Freq)))
+econ_usage <- matrix(c((econ_waffle$Freq[1])/sum(econ_waffle$Freq),
+                       (econ_waffle$Freq[2])/sum(econ_waffle$Freq),
+                       (econ_waffle$Freq[3])/sum(econ_waffle$Freq),
+                       (econ_waffle$Freq[4])/sum(econ_waffle$Freq),
+                       (econ_waffle$Freq[5])/sum(econ_waffle$Freq)), ncol=1)
+
+rownames(econ_usage) <- c('Happiness', 'Sadness', 'Anger', 'Disgust', 'Surprise')
+colnames(econ_usage) <- c('Proportion')
+kable(econ_usage) %>% save_kable("econ_words.txt")
 ```
 
 

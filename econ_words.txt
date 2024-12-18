@@ -1,0 +1,7 @@
+|          | Proportion|
+|:---------|----------:|
+|Happiness |  0.7642857|
+|Sadness   |  0.1714286|
+|Anger     |  0.0214286|
+|Disgust   |  0.0285714|
+|Surprise  |  0.0142857|

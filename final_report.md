@@ -142,12 +142,12 @@ SnowballC package.
 
 The Spanish Emotion Lexicon data filtered to remove words that carried
 less emotional weight, which was guided by detecting and removing the
-following stems:
-‘cuent\|solo\|sola\|llev\|lleg\|sab\|dec\|dich\|ped\|mano’. It was then
-stemmed using the SnowballC package. If a particular stem occurred
-multiple times in same emotion, duplicates were deleted. If a stem
-occurred multiple times across different emotions, duplicates were kept.
-After cleaning, the SEL consisted of 1,548 tokens.
+following stems: ‘cuent’, ‘solo’, ‘sola’, ‘llev’, ‘lleg’, ‘sab’, ‘dec’,
+‘dich’, ‘ped’, ‘mano’. It was then stemmed using the SnowballC package.
+If a particular stem occurred multiple times in same emotion, duplicates
+were deleted. If a stem occurred multiple times across different
+emotions, duplicates were kept. After cleaning, the SEL consisted of
+1,548 tokens.
 
 Click [here](Data-Pipeline.md) for more detailed information on cleaning
 and processing.

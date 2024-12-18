@@ -66,7 +66,7 @@ An additional component of the study is to demonstrate the composition of genera
 ### Sentiment Per Speaker Across Speech Data Proportions
 ![Usage Distribution Waffle](Data-Pipeline_files/figure-gfm/usage_words.png)
 
-### Proportions
+## Additional Distributions and Proportions
 
 In order to produce a meaningful analysis, the above sentiment distribution must be compared with (1) the sentiment distribution across the entire SEL as some sentiment categories contained more sentiment tokens than others and (2) the sentiment distribution across an additional reference set--specifically one that is based on a keyword set that is not language-oriented. For the below analysis, the keyword stem used was ['econom'] to isolate utterances that are related to economy. The pipeline to construct the economy reference set distribution is the same as the pipeline used to construct the Basque language set. Both the general SEL sentiment distribution and the economy reference distribution will assist in analyzing the most prevalent emotions in Basque language-related speech.
 

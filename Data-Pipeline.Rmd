@@ -433,15 +433,15 @@ prop_words <- matrix(c((sel_distribution$Freq[1])/sum(sel_distribution$Freq),
                        (sel_distribution$Freq[6])/sum(sel_distribution$Freq)), ncol=1)
 rownames(prop_words) <- c('Happiness', 'Anger', 'Fear', 'Disgust', 'Surprise', 'Sadness')
 colnames(prop_words) <- c('Proportion')
-kable(prop_words) %>% save_kable("prop_words.txt")
+kable(prop_words) %>% save_kable("prop_words.png")
 
 prop_usage <- matrix(c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
-                       (comp_waffle$Freq[2])/sum(comp_waffle$Freq),
-                       (comp_waffle$Freq[3])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[4])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[5])/sum(comp_waffle$Freq)
+                       (comp_waffle$Freq[6])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[5])/sum(comp_waffle$Freq),
-                       (comp_waffle$Freq[6])/sum(comp_waffle$Freq)), ncol=1)
-rownames(prop_usage) <- c('Happiness', 'Sadness', 'Anger', 'Fear', 'Surprise', 'Disgust')
+                       (comp_waffle$Freq[2])/sum(comp_waffle$Freq)), ncol=1)
+rownames(prop_usage) <- c('Happiness', 'Anger', 'Fear', 'Disgust', 'Surprise', 'Sadness')
 colnames(prop_usage) <- c('Proportion')
 kable(prop_usage) %>% save_kable("usage_words.txt")
 ```

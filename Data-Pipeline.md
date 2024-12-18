@@ -3,6 +3,27 @@ Data-Pipeline
 Claire McLean
 2024-10-28
 
+- [Data Pipeline](#data-pipeline)
+  - [Step 1: Importing major
+    dependencies](#step-1-importing-major-dependencies)
+  - [Step 2: The following code chunks are the pipeline I followed to
+    split the data into two smaller dataframes. This pipeline can be
+    ignored.](#step-2-the-following-code-chunks-are-the-pipeline-i-followed-to-split-the-data-into-two-smaller-dataframes-this-pipeline-can-be-ignored)
+  - [Step 3: Uploading raw .csv files:](#step-3-uploading-raw-csv-files)
+  - [Step 4: Data Cleaning](#step-4-data-cleaning)
+  - [Some basic stats of cleaned Parliament
+    data:](#some-basic-stats-of-cleaned-parliament-data)
+  - [Step 5: Wrangling SEL lexicon](#step-5-wrangling-sel-lexicon)
+  - [Step 6: Tokenizing and stemming Parliament sentence
+    data](#step-6-tokenizing-and-stemming-parliament-sentence-data)
+  - [Step 7: Merging Parliament data and SEL
+    data](#step-7-merging-parliament-data-and-sel-data)
+  - [Step 8: Plotting Parliament sentence
+    data](#step-8-plotting-parliament-sentence-data)
+  - [Step 9: Comparing Parliament sentence sentiment distribution with
+    non-related ‘economy’
+    distribution](#step-9-comparing-parliament-sentence-sentiment-distribution-with-non-related-economy-distribution)
+
 NOTE: The dataset I am using for this project is named
 basque_parliament_1 and was found on <https://huggingface.co>. The
 original project was funded by the Spanish Ministry of Science and
@@ -369,7 +390,6 @@ library(wordcloud)
 
 ``` r
 library(RColorBrewer)
-library(wordcloud2)
 
 #Ungrouping to create wordclouds
 merged_data3 <- merged_data %>% 
@@ -653,17 +673,32 @@ colnames(prop_words) <- c('Proportion')
 kable(prop_words) %>% save_kable("prop_words.txt")
 
 prop_usage <- matrix(c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
-                       (comp_waffle$Freq[2])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[3])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[4])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[6])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[5])/sum(comp_waffle$Freq),
-                       (comp_waffle$Freq[6])/sum(comp_waffle$Freq)), ncol=1)
-rownames(prop_usage) <- c('Happiness', 'Sadness', 'Anger', 'Fear', 'Surprise', 'Disgust')
+                       (comp_waffle$Freq[2])/sum(comp_waffle$Freq)), ncol=1)
+rownames(prop_usage) <- c('Happiness', 'Anger', 'Fear', 'Disgust', 'Surprise', 'Sadness')
 colnames(prop_usage) <- c('Proportion')
 kable(prop_usage) %>% save_kable("usage_words.txt")
+
+#Comparing SEL Data matrix with Speech Data matrix
+prop_words - prop_usage
 ```
 
-## Step 10: Comparing Parliament sentence sentiment distribution with non-related ‘economy’ distribution
+    ##            Proportion
+    ## Happiness -0.43552164
+    ## Anger      0.14763001
+    ## Fear       0.08056767
+    ## Disgust    0.09161014
+    ## Surprise   0.05143734
+    ## Sadness    0.06427649
+
+``` r
+#Comparing Economy Reference Set Data matrix with Speech Data matrix
+```
+
+## Step 9: Comparing Parliament sentence sentiment distribution with non-related ‘economy’ distribution
 
 Here, I will follow many of the steps above to create a new distribution
 that is based off of a brand-new keyword vector. Since all data is

@@ -2,7 +2,9 @@
 title: "Data-Pipeline"
 author: "Claire McLean"
 date: "2024-10-28"
-output: github_document
+output: 
+  github_document:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
@@ -239,7 +241,6 @@ Creating wordclouds for each sentiment:
 ```{r}
 library(wordcloud)
 library(RColorBrewer)
-library(wordcloud2)
 
 #Ungrouping to create wordclouds
 merged_data3 <- merged_data %>% 
@@ -433,20 +434,25 @@ prop_words <- matrix(c((sel_distribution$Freq[1])/sum(sel_distribution$Freq),
                        (sel_distribution$Freq[6])/sum(sel_distribution$Freq)), ncol=1)
 rownames(prop_words) <- c('Happiness', 'Anger', 'Fear', 'Disgust', 'Surprise', 'Sadness')
 colnames(prop_words) <- c('Proportion')
-kable(prop_words) %>% save_kable("prop_words.png")
+kable(prop_words) %>% save_kable("prop_words.txt")
 
 prop_usage <- matrix(c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[3])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[4])/sum(comp_waffle$Freq),
-                       (comp_waffle$Freq[5])/sum(comp_waffle$Freq)
                        (comp_waffle$Freq[6])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[5])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[2])/sum(comp_waffle$Freq)), ncol=1)
 rownames(prop_usage) <- c('Happiness', 'Anger', 'Fear', 'Disgust', 'Surprise', 'Sadness')
 colnames(prop_usage) <- c('Proportion')
 kable(prop_usage) %>% save_kable("usage_words.txt")
+
+#Comparing SEL Data matrix with Speech Data matrix
+prop_words - prop_usage
+
+#Comparing Economy Reference Set Data matrix with Speech Data matrix
 ```
 
-## Step 10: Comparing Parliament sentence sentiment distribution with non-related 'economy' distribution
+## Step 9: Comparing Parliament sentence sentiment distribution with non-related 'economy' distribution
 
 Here, I will follow many of the steps above to create a new distribution that is based off of a brand-new keyword vector. Since all data is stemmed, the vector I chose only contains one item: 'econom'
 ```{r}

@@ -432,7 +432,7 @@ prop_words <- matrix(c((sel_distribution$Freq[1])/sum(sel_distribution$Freq),
                        (sel_distribution$Freq[6])/sum(sel_distribution$Freq)), ncol=1)
 rownames(prop_words) <- c('Happiness', 'Anger', 'Fear', 'Disgust', 'Surprise', 'Sadness')
 colnames(prop_words) <- c('Proportion')
-kable(prop_words)
+print(kable(prop_words))
 
 prop_usage <- matrix(c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[2])/sum(comp_waffle$Freq),
@@ -442,7 +442,7 @@ prop_usage <- matrix(c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
                        (comp_waffle$Freq[6])/sum(comp_waffle$Freq)), ncol=1)
 rownames(prop_usage) <- c('Happiness', 'Sadness', 'Anger', 'Fear', 'Surprise', 'Disgust')
 colnames(prop_usage) <- c('Proportion')
-kable(prop_usage)
+print(kable(prop_usage))
 ```
 
 ## Step 10: Comparing Parliament sentence sentiment distribution with non-related 'economy' distribution

@@ -620,6 +620,8 @@ creating dataframe for proportions of SEL words to sentiments (2), and
 creating dataframe for proportions of speakers to to sentiments
 
 ``` r
+library(knitr)
+
 ggplot(data = sel_distribution, aes(fill=sel_distribution$Categoría, values=Freq)) +
   geom_waffle(color = "white") +
   scale_fill_manual(values = c(Alegría = "seagreen4", Enojo = "slateblue1", 
@@ -630,47 +632,50 @@ ggplot(data = sel_distribution, aes(fill=sel_distribution$Categoría, values=Fre
 ![](Data-Pipeline_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
 ``` r
-prop_words <- data.frame(Category = c('Happiness', 'Anger', 
-                                      'Fear', 'Disgust', 'Surprise', 
-                                      'Sadness'),
-                         Proportion = c((sel_distribution$Freq[1])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[2])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[3])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[4])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[5])/sum(sel_distribution$Freq),
-                                        (sel_distribution$Freq[6])/sum(sel_distribution$Freq)))
-
-prop_words
+prop_words <- matrix(c((sel_distribution$Freq[1])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[2])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[3])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[4])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[5])/sum(sel_distribution$Freq),
+                       (sel_distribution$Freq[6])/sum(sel_distribution$Freq)), ncol=1)
+rownames(prop_words) <- c('Happiness', 'Anger', 'Fear', 'Disgust', 'Surprise', 'Sadness')
+colnames(prop_words) <- c('Proportion')
+print(kable(prop_words))
 ```
 
-    ##    Category Proportion
-    ## 1 Happiness 0.33010336
-    ## 2     Anger 0.18669251
-    ## 3      Fear 0.10400517
-    ## 4   Disgust 0.10723514
-    ## 5  Surprise 0.08268734
-    ## 6   Sadness 0.18927649
+    ## 
+    ## 
+    ## |          | Proportion|
+    ## |:---------|----------:|
+    ## |Happiness |  0.3301034|
+    ## |Anger     |  0.1866925|
+    ## |Fear      |  0.1040052|
+    ## |Disgust   |  0.1072351|
+    ## |Surprise  |  0.0826873|
+    ## |Sadness   |  0.1892765|
 
 ``` r
-prop_usage <- data.frame(Category = c('Happiness', 'Sadness', 
-                                      'Anger', 'Fear', 'Surprise', 
-                                      'Disgust'),
-                         Proportion = c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[2])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[3])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[4])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[5])/sum(comp_waffle$Freq),
-                                        (comp_waffle$Freq[6])/sum(comp_waffle$Freq)))
-prop_usage
+prop_usage <- matrix(c((comp_waffle$Freq[1])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[2])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[3])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[4])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[5])/sum(comp_waffle$Freq),
+                       (comp_waffle$Freq[6])/sum(comp_waffle$Freq)), ncol=1)
+rownames(prop_usage) <- c('Happiness', 'Sadness', 'Anger', 'Fear', 'Surprise', 'Disgust')
+colnames(prop_usage) <- c('Proportion')
+print(kable(prop_usage))
 ```
 
-    ##    Category Proportion
-    ## 1 Happiness  0.7656250
-    ## 2   Sadness  0.1250000
-    ## 3     Anger  0.0390625
-    ## 4      Fear  0.0234375
-    ## 5  Surprise  0.0312500
-    ## 6   Disgust  0.0156250
+    ## 
+    ## 
+    ## |          | Proportion|
+    ## |:---------|----------:|
+    ## |Happiness |  0.7656250|
+    ## |Sadness   |  0.1250000|
+    ## |Anger     |  0.0390625|
+    ## |Fear      |  0.0234375|
+    ## |Surprise  |  0.0312500|
+    ## |Disgust   |  0.0156250|
 
 ## Step 10: Comparing Parliament sentence sentiment distribution with non-related ‘economy’ distribution
 

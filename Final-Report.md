@@ -58,13 +58,30 @@ Once the data were joined, the first step in the analysis was conducting a frequ
 
 As shown in the above plots the most common stems in the speech data associated with each sentiment are as follows: Anger: 'exces', Happiness: 'mejor', Sadness: 'part', Surprise: 'consegu', Disgust: 'mal', Fear: 'tem'.
 
-An additional component of the study is to demonstrate the composition of general sentiments across speakers. In total, the data consists of 111 unique speakers total. The most frequent emotion expressed by each speaker was calculated. As some speakers presented utterances that were associated with more than one sentiment at an equal frequency, these additional sentiments were also taken into consideration. 128 sentiments were distributed across the 111 unique speakers. The below waffle plot can be pictured as physical parliament session, each member represented by one (or more) squares.
+An additional component of the study is to demonstrate the composition of general sentiments across speakers. In total, the data consists of 111 unique speakers. The most frequent emotion expressed by each speaker was calculated. As some speakers presented utterances that were associated with more than one sentiment at an equal frequency, these additional sentiments were also taken into consideration. 128 sentiments were distributed across the 111 unique speakers. The below waffle plot can be pictured as physical parliament session, each member represented by one (or more) squares.
 
-### Sentiment Per Speaker across Speech Data
+### Sentiment Per Speaker Across Speech Data
 ![Usage Distribution Waffle](Data-Pipeline_files/figure-gfm/unnamed-chunk-26-1.png)
 
-In order to produce a meaningful analysis, the above sentiment distribution must be compared with (1) the sentiment distribution across the entire SEL as some sentiment categories contained more sentiment tokens than others and (2) the sentiment distribution across an additional reference set--specifically one that is based on a keyword set that is not language-oriented. For the below analysis, the keyword stem used was ['econom'] to isolate utterances that are related to economy. Both the general SEL sentiment distribution and the economy reference distribution will assist in analyzing the most prevalent emotions in Basque language-related speech.
+### Sentiment Per Speaker Across Speech Data Proportions
+![Usage Distribution Waffle](Data-Pipeline_files/figure-gfm/usage_words.png)
+
+### Proportions
+
+In order to produce a meaningful analysis, the above sentiment distribution must be compared with (1) the sentiment distribution across the entire SEL as some sentiment categories contained more sentiment tokens than others and (2) the sentiment distribution across an additional reference set--specifically one that is based on a keyword set that is not language-oriented. For the below analysis, the keyword stem used was ['econom'] to isolate utterances that are related to economy. The pipeline to construct the economy reference set distribution is the same as the pipeline used to construct the Basque language set. Both the general SEL sentiment distribution and the economy reference distribution will assist in analyzing the most prevalent emotions in Basque language-related speech.
 
 ### Sentiment Distribution Across All SEL Data
 ![SEL Distribution Waffle](Data-Pipeline_files/figure-gfm/unnamed-chunk-27-1.png)
+
+### Sentiment Proportion Across All SEL Data
+![SEL Distribution Proportions](Data-Pipeline_files/figure-gfm/prop_words.png)
+
+### Economy Reference Set Sentiment Distribution
+![Economy Set Distribution](Data-Pipeline_files/figure-gfm/unnamed-chunk-28-1.png)
+
+### Economy Reference Set Sentiment Distribution
+![Economy Set Proportions](Data-Pipeline_files/figure-gfm/econ_words.png)
+
+
+
 
